@@ -17,6 +17,14 @@ def generar_datos_tramos(cuerpo, dv):
         d1 = d[0]
         formula_latex = rf"f(x) = \frac{{(x - {a})(x + {d1})}}{{x - {a}}}"
         
+        # Valores exactos para validación
+        lim_izq_exacto = a + d1
+        lim_der_exacto = a + d1
+        lim_bilateral_existe = "Sí, existe"
+        fa_existe = "No existe / Indefinido"
+        fa_exacto = None
+        tipo_discontinuidad = "Removible (Evitable)"
+        
         # Valores
         for x in tabla_x:
             val = x + d1  # (x-a)(x+d1)/(x-a) = x+d1 for x!=a
@@ -40,6 +48,14 @@ def generar_datos_tramos(cuerpo, dv):
         d2 = d[1]
         d4 = d[3]
         formula_latex = rf"f(x) = \begin{{cases}} x + {d2}, & \text{{si }} x < {a} \\ x + {d4}, & \text{{si }} x \geq {a} \end{{cases}}"
+        
+        # Valores exactos para validación
+        lim_izq_exacto = a + d2
+        lim_der_exacto = a + d4
+        lim_bilateral_existe = "No, no existe"
+        fa_existe = "Existe"
+        fa_exacto = a + d4
+        tipo_discontinuidad = "Salto (Finito)"
         
         # Valores
         for x in tabla_x:
@@ -68,6 +84,14 @@ def generar_datos_tramos(cuerpo, dv):
         d5 = d[4]
         num = d5 + 1
         formula_latex = rf"f(x) = \frac{{{num}}}{{x - {a}}}"
+        
+        # Valores exactos para validación
+        lim_izq_exacto = "-infinito"
+        lim_der_exacto = "+infinito"
+        lim_bilateral_existe = "No, no existe"
+        fa_existe = "No existe / Indefinido"
+        fa_exacto = None
+        tipo_discontinuidad = "Infinita (Asintótica)"
         
         # Valores
         for x in tabla_x:
@@ -105,5 +129,11 @@ def generar_datos_tramos(cuerpo, dv):
         'regla': regla,
         'formula_latex': formula_latex,
         'tabla_valores': tabla_valores,
-        'figura': figura
+        'figura': figura,
+        'lim_izq_exacto': lim_izq_exacto,
+        'lim_der_exacto': lim_der_exacto,
+        'lim_bilateral_existe': lim_bilateral_existe,
+        'fa_existe': fa_existe,
+        'fa_exacto': fa_exacto,
+        'tipo_discontinuidad': tipo_discontinuidad
     }
