@@ -1,5 +1,5 @@
 import streamlit as st
-from Logicas.logica_conicas import generar_conica, graficar_conica, calcular_elementos_conica
+from logicas.logica_conicas import generar_conica, graficar_conica, calcular_elementos_conica
 from utilidades import (
     formato_num,
     formato_signo,
