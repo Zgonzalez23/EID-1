@@ -79,7 +79,8 @@ def calcular_elementos_conica(A, B, C, D, E):
         'centro_o_vertice': (0.0, 0.0),
         'focos': [],
         'vertices': [],
-        'ejes_directriz_asintotas': []
+        'ejes_directriz_asintotas': [],
+        'degenerada': None  # None = caso normal; si no, contiene el mensaje a mostrar
     }
 
     # 1. PARÁBOLA
@@ -146,15 +147,30 @@ def calcular_elementos_conica(A, B, C, D, E):
         h = -C / (2 * A) if A != 0 else 0.0
         k = -D / (2 * A) if A != 0 else 0.0
         r2 = -E/A + (C**2)/(4*A**2) + (D**2)/(4*A**2) if A != 0 else 0.0
-        r = max(0.0, r2) ** 0.5
 
-        elementos['centro_o_vertice'] = (h, k)
-        elementos['vertices'] = [(h + r, k), (h - r, k), (h, k + r), (h, k - r)]
-        elementos['focos'] = [(h, k)]
         elementos['h'] = h
         elementos['k'] = k
-        elementos['r'] = r
         elementos['r2'] = r2
+        elementos['centro_o_vertice'] = (h, k)
+
+        if r2 < 0:
+            elementos['degenerada'] = (
+                f"Circunferencia imaginaria: R² = {formato_num(r2)} < 0, "
+                "por lo tanto la ecuación no tiene puntos reales asociados."
+            )
+            elementos['r'] = 0.0
+        elif r2 == 0:
+            elementos['degenerada'] = (
+                "Circunferencia degenerada: R² = 0, por lo tanto la ecuación "
+                "representa un único punto (el centro) y no una curva."
+            )
+            elementos['r'] = 0.0
+            elementos['focos'] = [(h, k)]
+        else:
+            r = r2 ** 0.5
+            elementos['r'] = r
+            elementos['vertices'] = [(h + r, k), (h - r, k), (h, k + r), (h, k - r)]
+            elementos['focos'] = [(h, k)]
 
     # 3. ELIPSE
     elif tipo == 'Elipse':
@@ -165,73 +181,84 @@ def calcular_elementos_conica(A, B, C, D, E):
         F_A = LadoDerecho / A if A != 0 else 0.0
         F_B = LadoDerecho / B if B != 0 else 0.0
 
-        F_A_abs = abs(F_A)
-        F_B_abs = abs(F_B)
+        elementos['h'] = h
+        elementos['k'] = k
+        elementos['centro_o_vertice'] = (h, k)
 
-        if F_A_abs >= F_B_abs:  # Elipse horizontal
-            a = F_A_abs ** 0.5
-            b = F_B_abs ** 0.5
-            c = max(0.0, F_A_abs - F_B_abs) ** 0.5
+        if LadoDerecho == 0:
+            elementos['degenerada'] = (
+                "Elipse degenerada: el lado derecho de la ecuación canónica es 0, "
+                "por lo tanto la ecuación representa un único punto (el centro) y no una curva."
+            )
+        elif F_A < 0:
+            # Como A y B tienen el mismo signo en una elipse, F_A y F_B comparten signo
+            elementos['degenerada'] = (
+                f"Elipse imaginaria: al dividir el lado derecho por A y B se obtienen valores "
+                f"negativos (F_A = {formato_num(F_A)}, F_B = {formato_num(F_B)}), "
+                "por lo tanto la ecuación no tiene puntos reales asociados."
+            )
+        else:
+            F_A_abs = F_A
+            F_B_abs = F_B
 
-            elementos['centro_o_vertice'] = (h, k)
-            elementos['vertices'] = [
-                (h - a, k), (h + a, k),
-                (h, k - b), (h, k + b)
-            ]
-            elementos['focos'] = [(h - c, k), (h + c, k)]
-            elementos['h'] = h
-            elementos['k'] = k
-            elementos['a'] = a
-            elementos['b'] = b
-            elementos['c'] = c
-            elementos['es_horizontal'] = True
+            if F_A_abs >= F_B_abs:  # Elipse horizontal
+                a = F_A_abs ** 0.5
+                b = F_B_abs ** 0.5
+                c = max(0.0, F_A_abs - F_B_abs) ** 0.5
 
-            elementos['ejes_directriz_asintotas'] = [
-                {
-                    'tipo': 'Eje mayor',
-                    'eq_latex': f"y = {formato_num(k)}",
-                    'val': k,
-                    'orientacion': 'H'
-                },
-                {
-                    'tipo': 'Eje menor',
-                    'eq_latex': f"x = {formato_num(h)}",
-                    'val': h,
-                    'orientacion': 'V'
-                }
-            ]
-        else:  # Elipse vertical
-            a = F_B_abs ** 0.5
-            b = F_A_abs ** 0.5
-            c = max(0.0, F_B_abs - F_A_abs) ** 0.5
+                elementos['vertices'] = [
+                    (h - a, k), (h + a, k),
+                    (h, k - b), (h, k + b)
+                ]
+                elementos['focos'] = [(h - c, k), (h + c, k)]
+                elementos['a'] = a
+                elementos['b'] = b
+                elementos['c'] = c
+                elementos['es_horizontal'] = True
 
-            elementos['centro_o_vertice'] = (h, k)
-            elementos['vertices'] = [
-                (h, k - a), (h, k + a),
-                (h - b, k), (h + b, k)
-            ]
-            elementos['focos'] = [(h, k - c), (h, k + c)]
-            elementos['h'] = h
-            elementos['k'] = k
-            elementos['a'] = a
-            elementos['b'] = b
-            elementos['c'] = c
-            elementos['es_horizontal'] = False
+                elementos['ejes_directriz_asintotas'] = [
+                    {
+                        'tipo': 'Eje mayor',
+                        'eq_latex': f"y = {formato_num(k)}",
+                        'val': k,
+                        'orientacion': 'H'
+                    },
+                    {
+                        'tipo': 'Eje menor',
+                        'eq_latex': f"x = {formato_num(h)}",
+                        'val': h,
+                        'orientacion': 'V'
+                    }
+                ]
+            else:  # Elipse vertical
+                a = F_B_abs ** 0.5
+                b = F_A_abs ** 0.5
+                c = max(0.0, F_B_abs - F_A_abs) ** 0.5
 
-            elementos['ejes_directriz_asintotas'] = [
-                {
-                    'tipo': 'Eje mayor',
-                    'eq_latex': f"x = {formato_num(h)}",
-                    'val': h,
-                    'orientacion': 'V'
-                },
-                {
-                    'tipo': 'Eje menor',
-                    'eq_latex': f"y = {formato_num(k)}",
-                    'val': k,
-                    'orientacion': 'H'
-                }
-            ]
+                elementos['vertices'] = [
+                    (h, k - a), (h, k + a),
+                    (h - b, k), (h + b, k)
+                ]
+                elementos['focos'] = [(h, k - c), (h, k + c)]
+                elementos['a'] = a
+                elementos['b'] = b
+                elementos['c'] = c
+                elementos['es_horizontal'] = False
+
+                elementos['ejes_directriz_asintotas'] = [
+                    {
+                        'tipo': 'Eje mayor',
+                        'eq_latex': f"x = {formato_num(h)}",
+                        'val': h,
+                        'orientacion': 'V'
+                    },
+                    {
+                        'tipo': 'Eje menor',
+                        'eq_latex': f"y = {formato_num(k)}",
+                        'val': k,
+                        'orientacion': 'H'
+                    }
+                ]
 
     # 4. HIPÉRBOLA
     elif tipo == 'Hipérbola':

@@ -15,6 +15,7 @@ Aplicación web desarrollada en Python con Streamlit que permite:
 - **Clasificar la cónica** obtenida (circunferencia, elipse, hipérbola o parábola).
 - **Transformar** la ecuación general a su forma canónica y viceversa, con desarrollo matemático paso a paso.
 - **Graficar** la cónica en el plano cartesiano con sus elementos geométricos principales.
+- **Detectar casos degenerados o imaginarios** (circunferencias/elipses sin solución real o reducidas a un punto), mostrando una advertencia en vez de datos incorrectos.
 - **Analizar funciones por tramos** generadas desde el RUT: límites laterales, continuidad y tipos de discontinuidad.
 
 ---

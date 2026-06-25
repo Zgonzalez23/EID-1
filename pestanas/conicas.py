@@ -21,7 +21,20 @@ def renderizar_pestana_conica(res):
     
     st.header("2. Clasificación de la Cónica")
     st.success(f"**Tipo Determinado:** {conica['tipo_conica']}")
-    
+
+    if elementos['degenerada']:
+        st.header("3. Caso Especial: Cónica Degenerada o Imaginaria")
+        st.warning(elementos['degenerada'])
+        st.write(
+            "Como la ecuación no corresponde a una curva real estándar, no se calculará "
+            "la forma canónica habitual ni se habilitarán los campos de elementos "
+            "geométricos (centro, focos, vértices) para este caso particular."
+        )
+        st.header("4. Gráfica")
+        figura = graficar_conica(A, B, C, D, E, mostrar_elementos=False)
+        st.plotly_chart(figura, use_container_width=True)
+        return
+
     st.header("3. Transformación a Forma Canónica")
     if conica['tipo_conica'] == 'Parábola':
         if A == 0:
@@ -86,7 +99,11 @@ def renderizar_pestana_conica(res):
         st.latex(rf"{formato_primer_signo(A)}x^2 {formato_signo(B)}y^2 {formato_signo(A*-2*h)}x {formato_signo(B*-2*k)}y {formato_signo(A*h**2 + B*k**2 - LadoDerecho)} = 0")
     
     st.header("5. Gráfica y Evaluación de Elementos")
-    mostrar_elementos = st.checkbox("Mostrar ayuda visual (elementos geométricos principales en el gráfico)", value=True)
+    mostrar_elementos = st.checkbox(
+        "Mostrar ayuda visual (elementos geométricos principales en el gráfico)",
+        value=False,
+        help="Por defecto el gráfico se muestra limpio para que primero intentes completar los campos manualmente."
+    )
     
     col_graph, col_eval = st.columns([1.1, 1.0])
     
