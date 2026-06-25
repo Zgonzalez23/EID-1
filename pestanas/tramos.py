@@ -24,6 +24,10 @@ def renderizar_pestana_tramos(res):
         "La siguiente tabla muestra los valores de la función al aproximarse al punto crítico "
         f"**a = {datos['a']}** por ambos lados:"
     )
+    st.caption(
+        "La columna **lado** indica desde qué dirección se aproxima x, mientras que "
+        "**distancia a** muestra qué tan cerca está cada valor del punto crítico."
+    )
     st.table(datos['tabla_valores'])
 
     st.subheader("4. Representación Gráfica")

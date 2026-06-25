@@ -10,6 +10,14 @@ def generar_datos_tramos(cuerpo, dv):
     
     tabla_x = [a - 1, a - 0.1, a - 0.01, a - 0.001, a + 0.001, a + 0.01, a + 0.1, a + 1]
     tabla_valores = []
+
+    def crear_fila_tabla(x, valor):
+        return {
+            'x': formato_num(x),
+            'f(x)': formato_num(valor),
+            'lado': 'izquierda' if x < a else 'derecha',
+            'distancia a': formato_num(abs(x - a))
+        }
     
     if residuo == 0:
         caso = "Discontinuidad removible"
@@ -28,7 +36,7 @@ def generar_datos_tramos(cuerpo, dv):
         # Valores
         for x in tabla_x:
             val = x + d1  # (x-a)(x+d1)/(x-a) = x+d1 for x!=a
-            tabla_valores.append({'x': formato_num(x), 'f(x)': formato_num(val)})
+            tabla_valores.append(crear_fila_tabla(x, val))
             
         # Grafico
         x_izq = [a - 5 + (5 * i / 100) for i in range(100)]
@@ -63,7 +71,7 @@ def generar_datos_tramos(cuerpo, dv):
                 val = x + d2
             else:
                 val = x + d4
-            tabla_valores.append({'x': formato_num(x), 'f(x)': formato_num(val)})
+            tabla_valores.append(crear_fila_tabla(x, val))
             
         # Grafico
         x_izq = [a - 5 + (5 * i / 100) for i in range(100)]
@@ -96,7 +104,7 @@ def generar_datos_tramos(cuerpo, dv):
         # Valores
         for x in tabla_x:
             val = num / (x - a)
-            tabla_valores.append({'x': formato_num(x), 'f(x)': formato_num(val)})
+            tabla_valores.append(crear_fila_tabla(x, val))
             
         # Grafico
         x_izq = [a - 5 + (4.9 * i / 100) for i in range(101)]
