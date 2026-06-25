@@ -11,6 +11,8 @@ from utilidades import (
 def renderizar_pestana_conica(res):
     conica = generar_conica(res['cuerpo'], res['dv_ingresado'], res['v_val'])
     A, B, C, D, E = conica['A'], conica['B'], conica['C'], conica['D'], conica['E']
+    elementos = calcular_elementos_conica(A, B, C, D, E)
+    tipo_conica = elementos['tipo']
     
     st.header("1. Construcción de la Ecuación General")
     st.code("\n".join(conica['registros']))
@@ -23,34 +25,48 @@ def renderizar_pestana_conica(res):
     st.header("3. Transformación a Forma Canónica")
     if conica['tipo_conica'] == 'Parábola':
         if A == 0:
-            k = -D / (2 * B)
-            F_prima = -E + D**2 / (4 * B)
-            h = F_prima / C
-            
-            st.latex(rf"{formato_primer_signo(B)}(y^2 {formato_signo(D/B)}y) = {formato_signo(-C)}x {formato_signo(-E)}")
-            st.latex(rf"{formato_primer_signo(B)}(y {formato_signo(-k)})^2 = {formato_signo(-C)}x {formato_signo(-E)} + {formato_num(D**2/(4*B))}")
-            st.info("Forma Canónica:")
-            st.latex(rf"(y {formato_signo(-k)})^2 = {formato_num(-C/B)} (x {formato_signo(-h)})")
-            
-            st.header("4. Inversa: Canónica a General")
-            st.latex(rf"(y {formato_signo(-k)})^2 = {formato_num(-C/B)} (x {formato_signo(-h)})")
-            st.latex(rf"y^2 {formato_signo(-2*k)}y + {formato_num(k*k)} = {formato_num(-C/B)}x {formato_signo((-C/B)*-h)}")
-            st.latex(rf"{formato_primer_signo(B)}y^2 {formato_signo(C)}x {formato_signo(B*-2*k)}y {formato_signo(B*k*k - (-C)*-h)} = 0")
+            if B == 0 or C == 0:
+                st.warning(
+                    "No es posible calcular la forma canónica de esta parábola "
+                    "porque la ecuación corresponde a un caso degenerado."
+                )
+            else:
+                h = elementos['h']
+                k = elementos['k']
+                coeficiente_canonico = 4 * elementos['p']
+                correccion = D**2 / (4 * B)
+
+                st.latex(rf"{formato_primer_signo(B)}(y^2 {formato_signo(D/B)}y) = {formato_signo(-C)}x {formato_signo(-E)}")
+                st.latex(rf"{formato_primer_signo(B)}(y {formato_signo(-k)})^2 = {formato_signo(-C)}x {formato_signo(-E)} + {formato_num(correccion)}")
+                st.info("Forma Canónica:")
+                st.latex(rf"(y {formato_signo(-k)})^2 = {formato_num(coeficiente_canonico)} (x {formato_signo(-h)})")
+
+                st.header("4. Inversa: Canónica a General")
+                st.latex(rf"(y {formato_signo(-k)})^2 = {formato_num(coeficiente_canonico)} (x {formato_signo(-h)})")
+                st.latex(rf"y^2 {formato_signo(-2*k)}y + {formato_num(k*k)} = {formato_num(coeficiente_canonico)}x {formato_signo(coeficiente_canonico*-h)}")
+                st.latex(rf"{formato_primer_signo(B)}y^2 {formato_signo(C)}x {formato_signo(B*-2*k)}y {formato_signo(B*k*k - (-C)*-h)} = 0")
 
         else:
-            h = -C / (2 * A)
-            F_prima = -E + C**2 / (4 * A)
-            k = F_prima / D
-            
-            st.latex(rf"{formato_primer_signo(A)}(x^2 {formato_signo(C/A)}x) = {formato_signo(-D)}y {formato_signo(-E)}")
-            st.latex(rf"{formato_primer_signo(A)}(x {formato_signo(-h)})^2 = {formato_signo(-D)}y {formato_signo(-E)} + {formato_num(C**2/(4*A))}")
-            st.info("Forma Canónica:")
-            st.latex(rf"(x {formato_signo(-h)})^2 = {formato_num(-D/A)} (y {formato_signo(-k)})")
-            
-            st.header("4. Inversa: Canónica a General")
-            st.latex(rf"(x {formato_signo(-h)})^2 = {formato_num(-D/A)} (y {formato_signo(-k)})")
-            st.latex(rf"x^2 {formato_signo(-2*h)}x + {formato_num(h*h)} = {formato_num(-D/A)}y {formato_signo((-D/A)*-k)}")
-            st.latex(rf"{formato_primer_signo(A)}x^2 {formato_signo(D)}y {formato_signo(A*-2*h)}x {formato_signo(A*h*h - (-D)*-k)} = 0")
+            if A == 0 or D == 0:
+                st.warning(
+                    "No es posible calcular la forma canónica de esta parábola "
+                    "porque la ecuación corresponde a un caso degenerado."
+                )
+            else:
+                h = elementos['h']
+                k = elementos['k']
+                coeficiente_canonico = 4 * elementos['p']
+                correccion = C**2 / (4 * A)
+
+                st.latex(rf"{formato_primer_signo(A)}(x^2 {formato_signo(C/A)}x) = {formato_signo(-D)}y {formato_signo(-E)}")
+                st.latex(rf"{formato_primer_signo(A)}(x {formato_signo(-h)})^2 = {formato_signo(-D)}y {formato_signo(-E)} + {formato_num(correccion)}")
+                st.info("Forma Canónica:")
+                st.latex(rf"(x {formato_signo(-h)})^2 = {formato_num(coeficiente_canonico)} (y {formato_signo(-k)})")
+
+                st.header("4. Inversa: Canónica a General")
+                st.latex(rf"(x {formato_signo(-h)})^2 = {formato_num(coeficiente_canonico)} (y {formato_signo(-k)})")
+                st.latex(rf"x^2 {formato_signo(-2*h)}x + {formato_num(h*h)} = {formato_num(coeficiente_canonico)}y {formato_signo(coeficiente_canonico*-k)}")
+                st.latex(rf"{formato_primer_signo(A)}x^2 {formato_signo(D)}y {formato_signo(A*-2*h)}x {formato_signo(A*h*h - (-D)*-k)} = 0")
     else:
         h = -C / (2 * A)
         k = -D / (2 * B)
@@ -70,9 +86,6 @@ def renderizar_pestana_conica(res):
         st.latex(rf"{formato_primer_signo(A)}x^2 {formato_signo(B)}y^2 {formato_signo(A*-2*h)}x {formato_signo(B*-2*k)}y {formato_signo(A*h**2 + B*k**2 - LadoDerecho)} = 0")
     
     st.header("5. Gráfica y Evaluación de Elementos")
-    elementos = calcular_elementos_conica(A, B, C, D, E)
-    tipo_conica = elementos['tipo']
-    
     mostrar_elementos = st.checkbox("Mostrar ayuda visual (elementos geométricos principales en el gráfico)", value=True)
     
     col_graph, col_eval = st.columns([1.1, 1.0])
