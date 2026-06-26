@@ -118,6 +118,11 @@ def generar_datos_tramos(cuerpo, dv):
         # Asintota
         figura.add_vline(x=a, line_width=2, line_dash="dash", line_color="#94a3b8")
 
+    if residuo == 2:
+        yaxis_config = dict(zeroline=True, gridcolor='#334155', zerolinecolor='#94a3b8', range=[-20, 20])
+    else:
+        yaxis_config = dict(zeroline=True, gridcolor='#334155', zerolinecolor='#94a3b8')
+
     figura.update_layout(
         title="Gráfica de la Función por Tramos",
         xaxis_title="Eje X", yaxis_title="Eje Y",
@@ -125,8 +130,9 @@ def generar_datos_tramos(cuerpo, dv):
         plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)',
         font=dict(color='#e2e8f0'),
         xaxis=dict(zeroline=True, gridcolor='#334155', zerolinecolor='#94a3b8'),
-        yaxis=dict(zeroline=True, gridcolor='#334155', zerolinecolor='#94a3b8', range=[-20, 20]),
-        showlegend=False
+        yaxis=yaxis_config,
+        showlegend=False,
+        margin=dict(t=50, b=50, l=50, r=50)
     )
     
     return {

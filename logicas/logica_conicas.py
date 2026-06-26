@@ -365,7 +365,26 @@ def graficar_conica(A, B, C, D, E, mostrar_elementos=True):
     cx, cy = elementos['centro_o_vertice']
     tipo_conica = elementos['tipo']
 
+    # Determinar rango dinámico para que la curva sea visible
     rango = 15
+    if elementos.get('degenerada') is None:
+        if tipo_conica == 'Circunferencia':
+            r = elementos.get('r', 0.0)
+            if r > 0:
+                rango = max(15, r * 1.3)
+        elif tipo_conica == 'Elipse':
+            a = elementos.get('a', 0.0)
+            b = elementos.get('b', 0.0)
+            rango = max(15, max(a, b) * 1.3)
+        elif tipo_conica == 'Hipérbola':
+            a = elementos.get('a', 0.0)
+            b = elementos.get('b', 0.0)
+            rango = max(15, max(a, b) * 1.5)
+        elif tipo_conica == 'Parábola':
+            p = abs(elementos.get('p', 0.0))
+            if p > 0:
+                rango = max(15, p * 4.0)
+
     pasos = 200
     x = [cx - rango + (2 * rango * i / pasos) for i in range(pasos + 1)]
     y = [cy - rango + (2 * rango * i / pasos) for i in range(pasos + 1)]
