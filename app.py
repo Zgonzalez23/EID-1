@@ -15,14 +15,21 @@ def main():
     st.caption("MAT1186 - Introducción al Cálculo | Universidad Católica de Temuco")
     st.divider()
 
-    rut_ingresado = st.text_input(
-        "Ingrese un RUT chileno válido para iniciar el análisis:",
-        placeholder="Ej: 12.345.678-9 o 12345678-9",
-        help="El RUT debe tener entre 7 y 8 dígitos en el cuerpo, seguido de un guión y el dígito verificador (0-9 o K)."
-    )
+    with st.form("form_rut"):
+        rut_input = st.text_input(
+            "Ingrese un RUT chileno válido para iniciar el análisis:",
+            placeholder="Ej: 12.345.678-9 o 12345678-9",
+            help="El RUT debe tener entre 7 y 8 dígitos en el cuerpo, seguido de un guión y el dígito verificador (0-9 o K)."
+        )
+        enviado = st.form_submit_button("Analizar RUT")
+
+    if enviado and rut_input:
+        st.session_state["rut_confirmado"] = rut_input
+
+    rut_ingresado = st.session_state.get("rut_confirmado")
 
     if not rut_ingresado:
-        st.info("👆 Ingresa un RUT válido para comenzar el análisis completo.")
+        st.info("👆 Ingresa un RUT válido y presiona **Analizar RUT** para comenzar.")
         return
 
     es_valido, res, error = validar_rut(rut_ingresado)
