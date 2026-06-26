@@ -162,8 +162,8 @@ def renderizar_pestana_conica(res):
             dir_ori_exacta = "Vertical (x = constante)" if real_dir['orientacion'] == 'V' else "Horizontal (y = constante)"
             eje_ori_exacto = "Vertical (x = constante)" if real_eje['orientacion'] == 'V' else "Horizontal (y = constante)"
             
-            sdir_ori = "✅ Correcto" if user_dir_ori == dir_ori_exacta else ("⚠️ Vacío" if not user_dir_ori else "❌ Incorrecto")
-            seje_ori = "✅ Correcto" if user_eje_ori == eje_ori_exacto else ("⚠️ Vacío" if not user_eje_ori else "❌ Incorrecto")
+            sdir_ori = " Correcto" if user_dir_ori == dir_ori_exacta else ("Vacío" if not user_dir_ori else "Incorrecto")
+            seje_ori = " Correcto" if user_eje_ori == eje_ori_exacto else ("Vacío" if not user_eje_ori else "Incorrecto")
             
             st.write(f"- **Vértice:** h: {sh} | k: {sk}")
             st.write(f"- **Parámetro p:** {sp}")
