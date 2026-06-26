@@ -7,11 +7,10 @@ from pestanas.tramos import renderizar_pestana_tramos
 def main():
     st.set_page_config(
         page_title="EID-1 | Cónicas y Límites desde el RUT",
-        page_icon="📐",
         layout="wide"
     )
 
-    st.title("📐 Análisis de Cónicas y Funciones por Tramos desde el RUT")
+    st.title("Análisis de Cónicas y Funciones por Tramos desde el RUT")
     st.caption("MAT1186 - Introducción al Cálculo | Universidad Católica de Temuco")
     st.divider()
 
@@ -29,29 +28,29 @@ def main():
     rut_ingresado = st.session_state.get("rut_confirmado")
 
     if not rut_ingresado:
-        st.info("👆 Ingresa un RUT válido y presiona **Analizar RUT** para comenzar.")
+        st.info("Ingresa un RUT válido y presiona **Analizar RUT** para comenzar.")
         return
 
     es_valido, res, error = validar_rut(rut_ingresado)
 
     if error:
-        st.error(f"❌ Error de formato: {error}")
+        st.error(f"Error de formato: {error}")
         return
 
     if not es_valido:
         st.error(
-            f"❌ RUT inválido: el dígito verificador ingresado es **{res['dv_ingresado']}**, "
+            f"RUT inválido: el dígito verificador ingresado es **{res['dv_ingresado']}**, "
             f"pero el esperado para el cuerpo **{res['cuerpo_crudo']}** es **{res['dv_esperado']}**."
         )
         return
 
-    st.success(f"✅ RUT **{res['cuerpo_crudo']}-{res['dv_ingresado']}** validado correctamente.")
+    st.success(f"RUT **{res['cuerpo_crudo']}-{res['dv_ingresado']}** validado correctamente.")
     st.divider()
 
     pestana1, pestana2, pestana3 = st.tabs([
-        "📋 1. Validación de RUT",
-        "🔷 2. Análisis de Cónicas",
-        "📈 3. Función por Tramos"
+        "1. Validación de RUT",
+        "2. Análisis de Cónicas",
+        "3. Función por Tramos"
     ])
 
     with pestana1:
