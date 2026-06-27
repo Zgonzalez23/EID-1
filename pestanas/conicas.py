@@ -60,7 +60,7 @@ def renderizar_pestana_conica(res):
                 st.latex(rf"{formato_primer_signo(B)}y^2 {formato_signo(C)}x {formato_signo(B*-2*k)}y {formato_signo(B*k*k - (-C)*-h)} = 0")
 
         else:
-            if A == 0 or D == 0:
+            if D == 0:
                 st.warning(
                     "No es posible calcular la forma canónica de esta parábola "
                     "porque la ecuación corresponde a un caso degenerado."

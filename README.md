@@ -90,19 +90,19 @@ Se usa `plotly` exclusivamente para la representación gráfica de las curvas, l
 
 ## RUTs de prueba
 
-A continuación se listan RUTs válidos que permiten observar cada tipo de cónica:
+A continuación se listan RUTs válidos que permiten observar cada tipo de cónica (verificados, sin casos degenerados/imaginarios):
 
 | RUT | Cónica generada |
 |---|---|
-| Por definir según dígitos del grupo | Circunferencia |
-| Por definir según dígitos del grupo | Elipse |
-| Por definir según dígitos del grupo | Hipérbola |
-| Por definir según dígitos del grupo | Parábola |
+| 07439150-8 | Circunferencia |
+| 41586834-0 | Elipse |
+| 29141777-9 | Hipérbola |
+| 63170669-K | Parábola |
 
-*(Completar con los RUTs de prueba encontrados durante la Fase 4)*
+> Nota: dado que los coeficientes A-B-C-D-E dependen de los dígitos del RUT y de las reglas especiales, no todo RUT produce una cónica real (algunos casos generan circunferencias o elipses imaginarias/degeneradas, lo cual el programa detecta y reporta correctamente en vez de graficar valores erróneos). Los RUT de la tabla fueron elegidos específicamente porque generan una curva real en cada categoría, útiles para la demostración en la defensa oral.
 
 ---
 
 ## Código de ética del grupo
 
-*Adjuntar o referenciar el documento de código de ética interno del grupo según lo exigido en la Fase 3 de la pauta.*
+El código de ética y acuerdo de funcionamiento interno del grupo se encuentra en [`CODIGO_ETICA.md`](./CODIGO_ETICA.md), e incluye la distribución de responsabilidades por integrante, los compromisos de honestidad académica y las reglas de convivencia y trabajo acordadas.
